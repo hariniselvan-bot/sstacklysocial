@@ -1,0 +1,669 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Stackly Messages</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Poppins",sans-serif;
+}
+
+body{
+background:#000000;
+color:rgb(230, 229, 229);
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+height:100vh;
+width:80px;
+background:#000000;
+padding-top:25px;
+transition:0.4s;
+overflow:hidden;
+border-right:1px solid rgba(255,255,255,0.05);
+z-index:10;
+}
+
+.sidebar.active{
+width:240px;
+}
+
+.logo{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:40px;
+}
+
+.logo img{
+width:45px;
+margin-bottom:8px;
+}
+
+.logoText{
+font-size:18px;
+color:rgb(6, 6, 6);
+opacity:0;
+transition:0.3s;
+}
+
+.sidebar.active .logoText{
+opacity:1;
+}
+
+.menu{
+list-style:none;
+padding:0 10px;
+}
+
+.menu a{
+text-decoration:none;
+}
+
+.menu li{
+display:flex;
+align-items:center;
+gap:15px;
+color:#94a3b8;
+padding:14px;
+margin:10px 0;
+border-radius:40px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.menu li i{
+font-size:20px;
+min-width:40px;
+text-align:center;
+}
+
+.menu li span{
+opacity:0;
+white-space:nowrap;
+transition:0.3s;
+}
+
+.sidebar.active li span{
+opacity:1;
+}
+
+.menu li.active{
+background:linear-gradient(90deg,#1d4ed8,#0ea5e9);
+color:white;
+}
+
+.menu li:hover{
+background:#0f172a;
+color:white;
+}
+
+.bottomButton{
+position:absolute;
+bottom:25px;
+left:10px;
+right:10px;
+}
+
+.bottomButton li{
+background:linear-gradient(90deg,#1d4ed8,#0ea5e9);
+color:white;
+}
+
+/* ================= CHAT WRAPPER ================= */
+
+.chatWrapper{
+margin-left:80px;
+display:flex;
+height:100vh;
+}
+
+/* CONTACT LIST */
+
+.contactsPanel{
+width:320px;
+background:rgb(27, 27, 28);
+border-right:1px solid #ddd;
+display:flex;
+flex-direction:column;
+}
+
+.search{
+padding:10px;
+border-bottom:1px solid #eee;
+}
+
+.search input{
+width:100%;
+padding:8px;
+border-radius:20px;
+border:1px solid #ccc;
+}
+
+.contacts{
+flex:1;
+overflow-y:auto;
+}
+
+.contact{
+display:flex;
+align-items:center;
+gap:10px;
+padding:12px;
+cursor:pointer;
+border-bottom:1px solid #f1f1f1;
+}
+
+.contact:hover{
+background:#494646;
+}
+
+.contact img{
+width:40px;
+height:40px;
+border-radius:50%;
+}
+
+/* CHAT AREA */
+
+.chatArea{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+.chatHeader{
+background:#211515;
+padding:12px;
+font-weight:bold;
+}
+
+.messages{
+flex:1;
+padding:20px;
+overflow-y:auto;
+background:#130e17;
+}
+
+.message{
+max-width:260px;
+padding:10px;
+border-radius:10px;
+margin-bottom:10px;
+font-size:14px;
+}
+
+.sent{
+background:#111311;
+margin-left:auto;
+}
+
+.received{
+background:rgb(23, 22, 22);
+}
+
+.tick{
+font-size:12px;
+margin-left:5px;
+color:gray;
+}
+
+/* INPUT */
+
+.inputArea{
+display:flex;
+align-items:center;
+padding:10px;
+background:#f0f0f0;
+gap:10px;
+}
+
+.inputArea input{
+flex:1;
+padding:8px;
+border-radius:20px;
+border:1px solid #ccc;
+}
+
+.icon{
+cursor:pointer;
+font-size:18px;
+}
+
+.sendIcon{
+color:#000;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.sidebar{
+bottom:0;
+top:auto;
+height:70px;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+border-right:none;
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.menu{
+display:flex;
+width:100%;
+justify-content:space-around;
+}
+
+.menu li{
+flex-direction:column;
+gap:4px;
+margin:0;
+padding:5px;
+border-radius:20px;
+}
+
+.menu li span{
+display:none;
+}
+
+.logo{
+display:none;
+}
+
+.bottomButton{
+display:flex;
+position:static;
+}
+
+.chatWrapper{
+margin-left:0;
+padding-bottom:70px;
+}
+
+.contactsPanel{
+width:100%;
+}
+
+.chatArea{
+display:none;
+}
+
+body.activeChat .contactsPanel{
+display:none;
+}
+
+body.activeChat .chatArea{
+display:flex;
+}
+
+}
+.backBtn{
+margin-right:10px;
+cursor:pointer;
+font-size:20px;
+display:none;
+}
+
+@media(max-width:768px){
+
+.backBtn{
+display:inline;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= SIDEBAR ================= -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<img src="logo.webp">
+<h3 class="logoText">Stackly</h3>
+</div>
+
+<ul class="menu">
+
+<a href="home.html"><li><i class="fa-solid fa-house"></i><span>HOME ONE</span></li></a>
+
+<a href="home2.html"><li><i class="fa-solid fa-home"></i><span>HOME TWO</span></li></a>
+
+<a href="reel.html"><li><i class="fa-solid fa-clapperboard"></i><span>REELS</span></li></a>
+
+<a href="create.html"><li><i class="fa-solid fa-plus"></i><span>CREATE</span></li></a>
+
+<a href="explore.html"><li><i class="fa-solid fa-football"></i><span>EXPLORE</span></li></a>
+
+<a href="messages.html">
+<li class="active">
+<i class="fa-solid fa-message"></i>
+<span>MESSAGES</span>
+</li>
+</a>
+</ul>
+
+<ul class="menu bottomButton">
+<a href="myspace.html"><li><i class="fa-solid fa-circle-user"></i><span>My Spaces</span></li></a>
+</ul>
+
+</div>
+
+<!-- ================= CHAT ================= -->
+
+<div class="chatWrapper">
+
+<div class="contactsPanel">
+
+<div class="search">
+<input type="text" placeholder="Search contacts">
+</div>
+
+<div class="contacts">
+
+<div class="contact" onclick="openChat('Monoj Stackly Tester')">
+<img src="client-1.webp">
+<span>Monoj Tester</span>
+</div>
+
+<div class="contact" onclick="openChat('Abi Akka Stackly')">
+<img src="client-2.webp">
+<span>Abi Akka Stackly</span>
+</div>
+
+<div class="contact" onclick="openChat('Mr Akash')">
+<img src="client-3.webp">
+<span>Mr Akash</span>
+</div>
+
+<div class="contact" onclick="openChat('Priya Sharma')">
+<img src="client-4.webp">
+<span>Priya Sharma</span>
+</div>
+
+<div class="contact" onclick="openChat('Rohit Kumar')">
+<img src="h1.webp">
+<span>Rohit Kumar</span>
+</div>
+
+<div class="contact" onclick="openChat('Sneha Patel')">
+<img src="h2.webp">
+<span>Sneha Patel</span>
+</div>
+
+<div class="contact" onclick="openChat('Vikram Singh')">
+<img src="h3.webp">
+<span>Vikram Singh</span>
+</div>
+
+<div class="contact" onclick="openChat('Ananya Gupta')">
+<img src="h3-testimonial-1.webp">
+<span>Ananya Gupta</span>
+</div>
+
+<div class="contact" onclick="openChat('Raj Verma')">
+<img src="h3-testimonial-2.webp">
+<span>Raj Verma</span>
+</div>
+
+<div class="contact" onclick="openChat('Pooja Mehta')">
+<img src="h3-testimonial-3.webp">
+<span>Pooja Mehta</span>
+</div>
+
+<div class="contact" onclick="openChat('Kiran Das')">
+<img src="ppl4.webp">
+<span>Kiran Das</span>
+</div>
+
+
+</div>
+
+</div>
+<div class="chatArea">
+
+<div class="chatHeader">
+
+<span class="backBtn" onclick="goBack()">←</span>
+
+<span id="chatName">
+Select a contact
+</span>
+
+</div>
+<div class="messages" id="messages">
+
+<div class="message received">Hello 👋</div>
+
+<div class="message sent">
+Hi there <span class="tick">✔✔</span>
+</div>
+
+</div>
+
+<div class="inputArea">
+
+<span class="icon">😊</span>
+
+<input type="text" id="messageInput" placeholder="Type a message">
+
+<input type="file" id="file" style="display:none">
+
+<span class="icon" onclick="document.getElementById('file').click()">📎</span>
+
+<span class="icon sendIcon" onclick="sendMessage()">➤</span>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* SIDEBAR */
+
+const sidebar=document.getElementById("sidebar")
+
+sidebar.addEventListener("click",function(){
+if(window.innerWidth>768){
+sidebar.classList.toggle("active")
+}
+})
+
+/* OPEN CHAT */
+
+function openChat(name){
+document.getElementById("chatName").innerText=name
+document.body.classList.add("activeChat")
+}
+
+/* SEND MESSAGE */
+
+function sendMessage(){
+
+let input=document.getElementById("messageInput")
+
+if(input.value.trim()==="") return
+
+let msg=document.createElement("div")
+
+msg.className="message sent"
+
+msg.innerHTML=input.value+" <span class='tick'>✔✔</span>"
+
+document.getElementById("messages").appendChild(msg)
+
+input.value=""
+
+}
+function goBack(){
+document.body.classList.remove("activeChat");
+}
+</script>
+
+</body>
+</html>
+
+
+<footer class="stacklyFooter">
+
+<div class="footerContainer">
+
+<div class="footerCol">
+<h3>Stackly</h3>
+<p>Limitless marathons. Lightning sports.<br>
+Studios built for superfans.</p>
+</div>
+
+<div class="footerCol">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Services</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Dashboard</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+</div>
+
+<div class="footerCol">
+<h3>Contact Us</h3>
+<p>support@stackly.tv</p>
+<p>+1 800 123 4567</p>
+<p>Bangalore, India</p>
+<p>Partner with us</p>
+<p>Press & updates</p>
+</div>
+
+<div class="footerCol">
+<h3>Follow Us</h3>
+
+<div class="socialIcons">
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+<a href="#"><i class="fa-brands fa-youtube"></i></a>
+<a href="#"><i class="fa-brands fa-twitter"></i></a>
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="footerBottom">
+© 2026 Stackly. Built for marathoners.
+</div>
+
+</footer>
+<style>
+    .stacklyFooter{
+background:#1d212c;
+color:#cbd5f5;
+padding:60px 80px 20px;
+margin-left:80px;
+}
+
+.footerContainer{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:60px;
+}
+
+.footerCol h3{
+color:white;
+margin-bottom:15px;
+}
+
+.footerCol p{
+margin:6px 0;
+line-height:1.6;
+}
+
+.footerCol ul{
+list-style:none;
+padding:0;
+}
+
+.footerCol ul li{
+margin:6px 0;
+}
+
+.footerCol ul li a{
+color:#9ca3af;
+text-decoration:none;
+transition:0.3s;
+}
+
+.footerCol ul li a:hover{
+color:white;
+}
+
+.socialIcons{
+display:flex;
+gap:12px;
+margin-top:10px;
+}
+
+.socialIcons a{
+width:40px;
+height:40px;
+background:#0f172a;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+color:white;
+font-size:18px;
+transition:0.3s;
+}
+
+.socialIcons a:hover{
+background:#1d4ed8;
+}
+
+.stacklyFooter hr{
+margin:40px 0 20px;
+border:0;
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.footerBottom{
+color:#94a3b8;
+font-size:14px;
+}
+
+@media(max-width:768px){
+
+.stacklyFooter{
+margin-left:0;
+padding:40px 20px 90px;
+}
+
+.footerContainer{
+grid-template-columns:1fr;
+gap:30px;
+}
+
+}
+</style>

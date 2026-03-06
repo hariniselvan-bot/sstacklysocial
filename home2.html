@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Stackly</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#13101c;
+color:white;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+height:100vh;
+width:80px;
+background:#0a0c13;
+padding-top:25px;
+transition:0.4s;
+overflow:hidden;
+border-right:1px solid rgba(255,255,255,0.05);
+z-index:100;
+}
+
+.sidebar.active{
+width:240px;
+}
+
+.logo{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:40px;
+}
+
+.logo img{
+width:45px;
+margin-bottom:8px;
+}
+
+.logoText{
+font-size:18px;
+opacity:0;
+transition:0.3s;
+}
+
+.sidebar.active .logoText{
+opacity:1;
+}
+
+.menu{
+list-style:none;
+padding:0 10px;
+}
+
+.menu a{
+text-decoration:none;
+}
+
+.menu li{
+display:flex;
+align-items:center;
+gap:15px;
+color:#94a3b8;
+padding:14px;
+margin:10px 0;
+border-radius:40px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.menu li i{
+font-size:20px;
+min-width:40px;
+text-align:center;
+}
+
+.menu li span{
+opacity:0;
+transition:0.3s;
+}
+
+.sidebar.active li span{
+opacity:1;
+}
+
+.menu li:hover{
+background:#0f172a;
+color:white;
+}
+
+.bottomButton{
+position:absolute;
+bottom:25px;
+left:10px;
+right:10px;
+}
+
+/* CONTENT AREA */
+
+.main{
+margin-left:80px;
+padding:20px;
+transition:0.4s;
+}
+
+.sidebar.active ~ .main{
+margin-left:240px;
+}
+
+/* HEADER */
+
+.header{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:25px;
+}
+
+.searchBar{
+flex:1;
+display:flex;
+margin:0 20px;
+}
+
+.searchBar input{
+width:100%;
+padding:10px;
+border:none;
+border-radius:30px 0 0 30px;
+outline:none;
+}
+
+.searchBar button{
+padding:10px 20px;
+border:none;
+background:#222;
+color:white;
+border-radius:0 30px 30px 0;
+}
+
+.headerIcons{
+display:flex;
+gap:20px;
+font-size:20px;
+align-items:center;
+}
+
+.profile{
+width:35px;
+height:35px;
+background:#999;
+border-radius:50%;
+}
+
+/* AD */
+
+.ad{
+height:180px;
+background:#222;
+border-radius:10px;
+display:flex;
+align-items:center;
+justify-content:center;
+margin-bottom:40px;
+}
+
+/* VIDEO ROW */
+
+/* VIDEO GRID */
+@media(max-width:768px){
+
+/* VIDEO ROW */
+
+.videoGrid{
+display:flex;
+gap:15px;
+overflow-x:auto;
+padding-bottom:10px;
+}
+
+.videoGrid::-webkit-scrollbar{
+display:none;
+}
+
+/* VIDEO CARD */
+
+.videoCard{
+min-width:240px;
+background:#1e1e1e;
+border-radius:12px;
+overflow:hidden;
+flex-shrink:0;
+}
+
+/* THUMBNAIL SAME SIZE */
+
+.thumbnail{
+width:100%;
+height:140px;
+}
+
+.thumbnail img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* TEXT ALIGN */
+
+.videoTitle{
+font-size:14px;
+line-height:1.3;
+margin:8px 10px;
+}
+
+.videoMeta{
+font-size:12px;
+margin:0 10px 10px;
+}
+
+/* SHORTS FIX */
+
+.stacklyShortCard{
+min-width:150px;
+}
+
+.stacklyShortThumb img{
+width:150px;
+height:260px;
+}
+
+}
+.videoGrid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+gap:25px;
+margin-top:20px;
+}
+
+.videoCard{
+background:#1e1e1e;
+border-radius:12px;
+overflow:hidden;
+cursor:pointer;
+transition:0.3s;
+}
+
+.videoCard:hover{
+transform:scale(1.03);
+}
+
+.thumbnail{
+position:relative;
+width:100%;
+height:200px;
+overflow:hidden;
+}
+
+.thumbnail img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.videoTime{
+position:absolute;
+bottom:8px;
+right:8px;
+background:rgba(0,0,0,0.8);
+padding:3px 6px;
+font-size:12px;
+border-radius:4px;
+}
+
+.videoTitle{
+font-size:15px;
+margin:10px;
+line-height:1.4;
+}
+
+.videoMeta{
+font-size:13px;
+color:#aaa;
+margin:0 10px 10px 10px;
+}
+
+.videoCard:hover{
+transform:scale(1.05);
+}
+
+/* SHORTS */
+
+.shortsRow{
+display:flex;
+gap:20px;
+margin-bottom:40px;
+}
+
+.shortCard{
+width:180px;
+height:320px;
+background:#222;
+border-radius:15px;
+display:flex;
+align-items:center;
+justify-content:center;
+cursor:pointer;
+transition:.3s;
+}
+
+.shortCard:hover{
+transform:scale(1.05);
+}
+
+.sectionTitle{
+margin-bottom:15px;
+font-size:20px;
+}
+
+a{
+text-decoration:none;
+color:white;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.sidebar{
+bottom:0;
+top:auto;
+height:70px;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+}
+
+.menu{
+display:flex;
+width:100%;
+justify-content:space-around;
+}
+
+.menu li{
+flex-direction:column;
+gap:4px;
+margin:0;
+padding:5px;
+}
+
+.menu li span{
+display:none;
+}
+
+.logo{
+display:none;
+}
+
+.bottomButton{
+display:flex;
+position:static;
+}
+
+.main{
+margin-left:0;
+margin-bottom:80px;
+}
+
+.videoRow{
+flex-direction:column;
+}
+
+.shortsRow{
+overflow-x:auto;
+}
+
+}
+/* BIG VIDEO AD SECTION */
+
+.bigAdSection{
+width:100%;
+display:flex;
+justify-content:center;
+margin-top:20px;
+}
+
+.bigAdVideo{
+width:75%; /* 3/4 page width */
+height:300px;
+position:relative;
+border-radius:12px;
+overflow:hidden;
+background:#000;
+}
+
+.bigAdVideo video{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.bigAdOverlay{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+color:white;
+}
+
+.bigAdOverlay h2{
+font-size:28px;
+margin-bottom:10px;
+}
+
+.bigAdOverlay button{
+padding:10px 20px;
+border:none;
+background:red;
+color:white;
+border-radius:6px;
+cursor:pointer;
+}
+
+.videoGrid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+gap:25px;
+}
+
+.videoCard{
+cursor:pointer;
+}
+
+.thumbnail{
+position:relative;
+width:100%;
+height:190px;
+border-radius:12px;
+overflow:hidden;
+}
+
+.thumbnail img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+.videoTime{
+position:absolute;
+bottom:8px;
+right:8px;
+background:rgba(0,0,0,0.8);
+padding:3px 6px;
+font-size:12px;
+border-radius:4px;
+}
+
+.videoInfo{
+display:flex;
+gap:12px;
+margin-top:10px;
+}
+
+.channelIcon{
+width:36px;
+height:36px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.videoText h4{
+font-size:15px;
+font-weight:500;
+line-height:1.3;
+margin-bottom:4px;
+}
+
+.videoText p{
+font-size:13px;
+color:#aaa;
+}
+.playBtn{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.6);
+width:55px;
+height:55px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+opacity:0;
+transition:0.3s;
+}
+
+.thumbnail:hover .playBtn{
+opacity:1;
+}
+/* HERO SLIDER */
+
+.heroSlider{
+position:relative;
+width:100%;
+height:420px;
+border-radius:18px;
+overflow:hidden;
+margin-bottom:40px;
+}
+
+.slide{
+position:absolute;
+width:100%;
+height:100%;
+opacity:0;
+transition:1s;
+}
+
+.slide.active{
+opacity:1;
+z-index:1;
+}
+
+.slide img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+/* gradient overlay */
+
+.slide::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:linear-gradient(90deg,rgba(0,0,0,0.85) 25%,rgba(0,0,0,0.3) 60%,transparent);
+z-index:1;
+}
+
+.heroOverlay{
+position:absolute;
+top:50%;
+left:60px;
+transform:translateY(-50%);
+z-index:2;
+max-width:500px;
+}
+
+.heroOverlay h1{
+font-size:46px;
+margin-bottom:15px;
+}
+
+.heroOverlay p{
+color:#d1d5db;
+margin-bottom:20px;
+}
+
+.heroMeta{
+display:flex;
+gap:20px;
+margin-bottom:20px;
+color:#ddd;
+}
+
+.watchBtn{
+padding:14px 32px;
+border:none;
+border-radius:30px;
+background:linear-gradient(90deg,#3b82f6,#8b5cf6);
+color:white;
+font-size:16px;
+cursor:pointer;
+}
+.videoGrid{
+display:grid;
+grid-template-columns:repeat(3, 320px); /* fixed card width */
+gap:30px;
+justify-content:center;
+margin-bottom:40px;
+}
+
+.videoCard{
+width:320px;
+cursor:pointer;
+}
+
+.thumbnail{
+position:relative;
+width:320px;
+height:180px;
+border-radius:12px;
+overflow:hidden;
+}
+
+.thumbnail img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+.videoTime{
+position:absolute;
+bottom:8px;
+right:8px;
+background:rgba(0,0,0,0.8);
+padding:3px 6px;
+font-size:12px;
+border-radius:4px;
+}
+
+.videoTitle{
+margin-top:8px;
+font-size:15px;
+line-height:1.4;
+}
+
+.videoMeta{
+font-size:13px;
+color:#aaa;
+margin-top:3px;
+}
+.trendsHeader{
+font-size:24px;
+font-weight:600;
+margin:20px 0;
+}
+.playBtn{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.6);
+width:60px;
+height:60px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+color:white;
+text-decoration:none;
+transition:0.3s;
+opacity:0;
+}
+
+/* show play button on hover (desktop) */
+.thumbnail:hover .playBtn{
+opacity:1;
+}
+
+/* ALWAYS show on mobile */
+@media(max-width:768px){
+.playBtn{
+opacity:1;
+}
+}
+.videoGrid{
+display:flex;
+gap:25px;
+overflow-x:auto;
+padding-bottom:10px;
+scroll-behavior:smooth;
+}
+
+/* hide scrollbar (optional) */
+
+.videoGrid::-webkit-scrollbar{
+display:none;
+}
+.videoCard{
+min-width:300px;
+background:#1e1e1e;
+border-radius:12px;
+overflow:hidden;
+cursor:pointer;
+transition:0.3s;
+}/* SHORTS HEADER */
+
+.stacklyShortsHeader{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-top:40px;
+margin-bottom:15px;
+}
+
+/* VIEW ALL BUTTON */
+
+.stacklyViewBtn{
+background:#ff0033;
+color:white;
+padding:8px 18px;
+border-radius:20px;
+text-decoration:none;
+font-size:14px;
+transition:0.3s;
+}
+
+.stacklyViewBtn:hover{
+background:#cc0029;
+}
+
+/* SHORTS ROW */
+
+.stacklyShortsRow{
+display:flex;
+gap:20px;
+overflow-x:auto;
+padding-bottom:10px;
+}
+
+.stacklyShortsRow::-webkit-scrollbar{
+display:none;
+}
+
+/* CARD */
+
+.stacklyShortCard{
+min-width:200px;
+cursor:pointer;
+}
+
+.stacklyShortCard img{
+width:200px;
+height:350px;
+object-fit:cover;
+border-radius:12px;
+}
+
+.stacklyShortCard p{
+margin-top:8px;
+font-size:14px;
+}
+
+.stacklyShortCard span{
+font-size:12px;
+color:#aaa;
+}
+/* SHORT CARD */
+
+.stacklyShortCard{
+min-width:200px;
+cursor:pointer;
+}
+
+/* THUMBNAIL */
+
+.stacklyShortThumb{
+position:relative;
+}
+
+.stacklyShortThumb img{
+width:200px;
+height:350px;
+object-fit:cover;
+border-radius:12px;
+}
+
+/* PLAY BUTTON OVERLAY */
+
+.stacklyShortPlay{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.6);
+width:55px;
+height:55px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:18px;
+text-decoration:none;
+transition:0.3s;
+opacity:0;
+}
+
+/* SHOW BUTTON ON HOVER */
+
+.stacklyShortThumb:hover .stacklyShortPlay{
+opacity:1;
+}
+
+/* ALWAYS SHOW ON MOBILE */
+
+@media(max-width:768px){
+.stacklyShortPlay{
+opacity:1;
+}
+}
+.profile{
+width:35px;
+height:35px;
+border-radius:50%;
+overflow:hidden;
+display:inline-block;
+cursor:pointer;
+}
+
+.profile img{
+width:100%;
+height:100%;
+object-fit:cover;
+border-radius:50%;
+}
+</style>
+</head>
+
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<img src="logo.webp">
+<h3 class="logoText">Stackly</h3>
+</div>
+
+<ul class="menu">
+
+<a href="home.html"><li><i class="fa-solid fa-house"></i><span>HOME ONE</span></li></a>
+<a href="home2.html"><li><i class="fa-solid fa-home"></i><span>HOME TWO</span></li></a>
+<a href="reel.html"><li><i class="fa-solid fa-clapperboard"></i><span>REELS</span></li></a>
+<a href="create.html"><li><i class="fa-solid fa-plus"></i><span>CREATE</span></li></a>
+<a href="explore.html"><li><i class="fa-solid fa-compass"></i><span>EXPLORE</span></li></a>
+<a href="messages.html"><li><i class="fa-solid fa-message"></i><span>MESSAGES</span></li></a>
+
+</ul>
+
+<ul class="menu bottomButton">
+<a href="myspace.html"><li><i class="fa-solid fa-circle-user"></i><span>MY SPACES</span></li></a>
+</ul>
+
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+<!-- HEADER -->
+
+<div class="header">
+
+<h2>Stackly</h2>
+
+<div class="searchBar">
+<input type="text" placeholder="Search">
+<a href="404.html">
+<button><i class="fa fa-search"></i></button>
+</a>
+</div>
+
+<div class="headerIcons">
+<a href="explore.html"><i class="fa fa-plus"></i></a>
+<a href="404.html"><i class="fa fa-bell"></i></a>
+<a href="myspace.html" class="profile">
+<img src="ppl4.jpeg" alt="profile">
+</a>
+</a></div>
+
+</div>
+
+
+<!-- AD -->
+
+<!-- HERO AD SLIDER -->
+
+<section class="heroSlider">
+
+<div class="slide active">
+<img src="h3.webp">
+
+<div class="heroOverlay">
+<h1>GET 30% OFF</h1>
+<p>MAKE YOURE DEAL NOW</p>
+
+<div class="heroMeta">
+<span><i class="fa fa-star"></i> Stackly CARS</span>
+<span><i class="fa fa-clock"></i> 45 LAKH</span>
+<span><i class="fa fa-star"></i> 9.5 / 10</span>
+</div>
+
+<button class="watchBtn">BOOK NOW</button>
+</div>
+</div>
+
+
+<div class="slide">
+<img src="h2.webp">
+
+<div class="heroOverlay">
+<h1>The Lost Galaxy</h1>
+<p>An interstellar adventure across unknown planets.</p>
+
+<div class="heroMeta">
+<span><i class="fa fa-star"></i> Stackly CINIMAS</span>
+<span><i class="fa fa-clock"></i> 55 min</span>
+<span><i class="fa fa-star"></i> 9.2 / 10</span>
+</div>
+
+<button class="watchBtn">BOOK Now</button>
+</div>
+</div>
+
+
+<div class="slide">
+<img src="h1.webp">
+
+<div class="heroOverlay">
+<h1>Midnight Chase</h1>
+<p>A high speed crime thriller through neon city streets.</p>
+
+<div class="heroMeta">
+<span><i class="fa fa-star"></i> Stackly subscriptions</span>
+<span><i class="fa fa-clock"></i> 42 min</span>
+<span><i class="fa fa-star"></i> 8.8 / 10</span>
+</div>
+
+<button class="watchBtn">BOOK Now</button>
+</div>
+</div>
+
+</section>
+
+<!-- VIDEOS -->
+
+<h2 class="trendsHeader">🔥 Trends</h2>
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum1.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum2.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum3.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum4.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+<!-- SHORTS SECTION -->
+
+
+<!-- SHORTS SECTION -->
+
+<div class="stacklyShortsHeader">
+<h2>🎬 Shorts</h2>
+
+<a href="reel.html" class="stacklyViewBtn">
+View All
+</a>
+</div>
+
+
+<div class="stacklyShortsRow">
+
+<!-- CARD 1 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv1.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>School memories 😂</p>
+<span>3.4M views</span>
+</div>
+
+<!-- CARD 2 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv2.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Mini vlog 💄</p>
+<span>1.3M views</span>
+</div>
+
+<!-- CARD 3 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv3.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>London Tamil 🇬🇧</p>
+<span>1.9M views</span>
+</div>
+
+<!-- CARD 4 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv4.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Teacher Dance 😂</p>
+<span>10M views</span>
+</div>
+
+<!-- CARD 5 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv5.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Prom dresses ✨</p>
+<span>11M views</span>
+</div>
+
+<!-- CARD 6 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv6.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Daily life vlog 🎥</p>
+<span>2.2M views</span>
+</div>
+
+</div>
+<script>
+
+const sidebar = document.getElementById("sidebar");
+
+sidebar.addEventListener("click", function(){
+
+if(window.innerWidth > 768){
+sidebar.classList.toggle("active");
+}
+
+});
+
+</script>
+
+<script>
+
+let slides = document.querySelectorAll(".slide");
+let index = 0;
+
+function changeSlide(){
+
+slides[index].classList.remove("active");
+
+index++;
+
+if(index >= slides.length){
+index = 0;
+}
+
+slides[index].classList.add("active");
+
+}
+
+setInterval(changeSlide,5000);
+
+</script>
+
+<!-- VIDEOS -->
+
+<h2 class="trendsHeader">CLASSIC 🎶</h2>
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum5.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum6.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum7.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum8.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+
+<!-- VIDEOS -->
+
+<h2 class="trendsHeader"></h2>
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum9.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum10.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum9.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum12.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+
+<!-- VIDEOS -->
+
+<h2 class="trendsHeader">YOURE FAVORITES❤️</h2>
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum13.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum14.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum15.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum16.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum17.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum18.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum19.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum2.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+
+
+<!-- SHORTS SECTION -->
+
+<div class="stacklyShortsHeader">
+<h2>🎬 Shorts</h2>
+
+<a href="reel.html" class="stacklyViewBtn">
+View All
+</a>
+</div>
+
+
+<div class="stacklyShortsRow">
+
+<!-- CARD 1 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv7.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>School memories 😂</p>
+<span>3.4M views</span>
+</div>
+
+<!-- CARD 2 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv8.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Mini vlog 💄</p>
+<span>1.3M views</span>
+</div>
+
+<!-- CARD 3 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv9.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>London Tamil 🇬🇧</p>
+<span>1.9M views</span>
+</div>
+
+<!-- CARD 4 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv4.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Teacher Dance 😂</p>
+<span>10M views</span>
+</div>
+
+<!-- CARD 5 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv5.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Prom dresses ✨</p>
+<span>11M views</span>
+</div>
+
+<!-- CARD 6 -->
+<div class="stacklyShortCard">
+<div class="stacklyShortThumb">
+<img src="sv6.webp">
+<a href="404.html" class="stacklyShortPlay">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+<p>Daily life vlog 🎥</p>
+<span>2.2M views</span>
+</div>
+
+</div>
+
+<!-- VIDEOS -->
+
+<h2 class="trendsHeader">YOURE FAVORITES❤️</h2>
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum5.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum6.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum7.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum8.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+
+
+<div class="videoGrid">
+
+<!-- CARD 1 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum10.webp">
+<span class="videoTime">4:28</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – En Mannavva Video Song | Rajinikanth | Anushka Shetty
+</h4>
+
+<p class="videoMeta">
+Tamil Music Channel • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 2 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum12.webp">
+<span class="videoTime">5:12</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Mix – Music of India | K.J Yesudas & S. Janaki
+</h4>
+
+<p class="videoMeta">
+Indian Music Mix • 1.2M views • 1 month ago
+</p>
+
+</div>
+
+
+<!-- CARD 3 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum15.webp">
+<span class="videoTime">28:35</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Anak Kunti Horror Story Explained in Tamil
+</h4>
+
+<p class="videoMeta">
+Tamil Hollywood Times • 252K views • 2 weeks ago
+</p>
+
+</div>
+
+
+<!-- CARD 4 -->
+
+<div class="videoCard">
+
+<div class="thumbnail">
+<img src="thum16.webp">
+<span class="videoTime">3:45</span>
+
+<a href="404.html" class="playBtn">
+<i class="fa-solid fa-play"></i>
+</a>
+</div>
+
+<h4 class="videoTitle">
+Relaxing Nature Music | Peaceful Background Music
+</h4>
+
+<p class="videoMeta">
+Nature Relaxation • 800K views • 3 weeks ago
+</p>
+
+</div>
+</div>
+
+<footer class="stacklyFooter">
+
+<div class="footerContainer">
+
+<div class="footerCol">
+<h3>Stackly</h3>
+<p>Limitless marathons. Lightning sports.<br>
+Studios built for superfans.</p>
+</div>
+
+<div class="footerCol">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Services</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Dashboard</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+</div>
+
+<div class="footerCol">
+<h3>Contact Us</h3>
+<p>support@stackly.tv</p>
+<p>+1 800 123 4567</p>
+<p>Bangalore, India</p>
+<p>Partner with us</p>
+<p>Press & updates</p>
+</div>
+
+<div class="footerCol">
+<h3>Follow Us</h3>
+
+<div class="socialIcons">
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+<a href="#"><i class="fa-brands fa-youtube"></i></a>
+<a href="#"><i class="fa-brands fa-twitter"></i></a>
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="footerBottom">
+© 2026 Stackly. Built for marathoners.
+</div>
+
+</footer>
+<style>
+    .stacklyFooter{
+background:#13101c;
+color:#cbd5f5;
+padding:60px 80px 20px;
+margin-left:80px;
+}
+
+.footerContainer{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:60px;
+}
+
+.footerCol h3{
+color:white;
+margin-bottom:15px;
+}
+
+.footerCol p{
+margin:6px 0;
+line-height:1.6;
+}
+
+.footerCol ul{
+list-style:none;
+padding:0;
+}
+
+.footerCol ul li{
+margin:6px 0;
+}
+
+.footerCol ul li a{
+color:#9ca3af;
+text-decoration:none;
+transition:0.3s;
+}
+
+.footerCol ul li a:hover{
+color:white;
+}
+
+.socialIcons{
+display:flex;
+gap:12px;
+margin-top:10px;
+}
+
+.socialIcons a{
+width:40px;
+height:40px;
+background:#0f172a;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+color:white;
+font-size:18px;
+transition:0.3s;
+}
+
+.socialIcons a:hover{
+background:#1d4ed8;
+}
+
+.stacklyFooter hr{
+margin:40px 0 20px;
+border:0;
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.footerBottom{
+color:#94a3b8;
+font-size:14px;
+}
+
+@media(max-width:768px){
+
+.stacklyFooter{
+margin-left:0;
+padding:40px 20px 90px;
+}
+
+.footerContainer{
+grid-template-columns:1fr;
+gap:30px;
+}
+
+}
+</style>

@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Stackly Profile</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+}
+
+body{
+background:#000;
+color:white;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+height:100vh;
+width:80px;
+background:#020313;
+padding-top:25px;
+transition:0.4s;
+border-right:1px solid rgba(255,255,255,0.05);
+z-index:1000;
+}
+
+.sidebar.active{
+width:240px;
+}
+
+/* LOGO */
+
+.logo{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:40px;
+}
+
+.logo img{
+width:45px;
+margin-bottom:8px;
+}
+
+.logoText{
+font-size:18px;
+opacity:0;
+transition:0.3s;
+}
+
+.sidebar.active .logoText{
+opacity:1;
+}
+
+/* MENU */
+
+.menu{
+list-style:none;
+padding:0 10px;
+}
+
+.menu a{
+text-decoration:none;
+}
+
+.menu li{
+display:flex;
+align-items:center;
+gap:15px;
+color:#94a3b8;
+padding:14px;
+margin:10px 0;
+border-radius:40px;
+cursor:pointer;
+transition:0.3s;
+}
+
+.menu li i{
+font-size:20px;
+min-width:40px;
+text-align:center;
+}
+
+.menu li span{
+opacity:0;
+transition:0.3s;
+}
+
+.sidebar.active li span{
+opacity:1;
+}
+
+/* ACTIVE */
+
+.menu li.active{
+background:linear-gradient(90deg,#1d4ed8,#0ea5e9);
+color:white;
+}
+
+/* HOVER */
+
+.menu li:hover{
+background:#0f172a;
+color:white;
+}
+
+/* BOTTOM BUTTON */
+
+.bottomButton{
+position:absolute;
+bottom:25px;
+left:10px;
+right:10px;
+}
+
+.bottomButton li{
+background:linear-gradient(90deg,#1d4ed8,#0ea5e9);
+color:white;
+}
+
+/* MAIN CONTENT */
+
+.mainContent{
+margin-left:80px;
+transition:0.4s;
+padding:30px;
+}
+
+.sidebar.active ~ .mainContent{
+margin-left:240px;
+}
+
+/* PROFILE HEADER */
+
+.profileHeader{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:20px;
+text-align:center;
+}
+.profileStats{
+display:flex;
+gap:25px;
+font-size:16px;
+justify-content:center;
+}
+.profileImg{
+width:150px;
+height:150px;
+border-radius:50%;
+object-fit:cover;
+}
+
+.profileInfo{
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.username{
+font-size:24px;
+font-weight:600;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.profileStats{
+display:flex;
+gap:25px;
+font-size:16px;
+}
+
+.profileButtons{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.profileButtons a{
+padding:10px 20px;
+border-radius:8px;
+background:#262626;
+color:white;
+text-decoration:none;
+}
+
+/* HIGHLIGHTS */
+
+.highlights{
+display:flex;
+gap:20px;
+margin-top:40px;
+}
+
+.highlight{
+text-align:center;
+}
+
+.highlightCircle{
+width:70px;
+height:70px;
+border-radius:50%;
+border:2px solid #333;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:30px;
+margin-bottom:5px;
+}
+
+/* TABS */
+
+.profileTabs{
+display:flex;
+justify-content:center;
+gap:80px;
+border-top:1px solid #222;
+border-bottom:1px solid #222;
+padding:12px 0;
+margin-top:30px;
+}
+
+.profileTabs i{
+font-size:20px;
+}
+
+/* POSTS GRID */
+
+.postsGrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:2px;
+margin-top:10px;
+}
+
+.postsGrid img{
+width:100%;
+height:300px;
+object-fit:cover;
+}
+
+/* EMPTY PROFILE */
+
+.emptyProfile{
+text-align:center;
+padding:80px 20px;
+opacity:0.9;
+}
+
+.emptyProfile i{
+font-size:60px;
+margin-bottom:15px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.sidebar{
+bottom:0;
+top:auto;
+height:65px;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+border-top:1px solid rgba(255,255,255,0.1);
+border-right:none;
+padding:0;
+}
+
+.menu{
+display:flex;
+width:100%;
+justify-content:space-around;
+}
+
+.menu li{
+flex-direction:column;
+gap:3px;
+margin:0;
+padding:5px;
+}
+
+.menu li span{
+display:none;
+}
+
+.logo{
+display:none;
+}
+
+@media(max-width:768px){
+
+.bottomButton{
+display:flex;
+position:static;
+}
+
+}
+
+.mainContent{
+margin-left:0;
+padding-bottom:80px;
+}
+
+.profileHeader{
+flex-direction:column;
+text-align:center;
+gap:20px;
+}
+
+.postsGrid img{
+height:140px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar" id="sidebar">
+
+<div class="logo">
+<img src="logo.webp">
+<h3 class="logoText">Stackly</h3>
+</div>
+
+<ul class="menu">
+
+<a href="home.html">
+<li>
+<i class="fa-solid fa-house"></i>
+<span>HOME</span>
+</li>
+</a>
+<a href="home2.html">
+<li>
+<i class="fa-solid fa-house"></i>
+<span>HOME TWO</span>
+</li>
+</a>
+
+<a href="explore.html">
+<li>
+<i class="fa-solid fa-football"></i>
+<span>EXPLORE</span>
+</li>
+</a>
+
+<a href="reel.html">
+<li>
+<i class="fa-solid fa-clapperboard"></i>
+<span>REELS</span>
+</li>
+</a>
+
+<a href="create.html">
+<li>
+<i class="fa-solid fa-plus"></i>
+<span>CREATE</span>
+</li>
+</a>
+
+<a href="messages.html">
+<li>
+<i class="fa-solid fa-message"></i>
+<span>MESSAGES</span>
+</li>
+</a>
+
+</ul>
+
+<ul class="menu bottomButton">
+
+<a href="myspace.html">
+<li>
+<i class="fa-solid fa-circle-user"></i>
+<span>My Spaces</span>
+</li>
+</a>
+
+</ul>
+
+</div>
+
+
+
+<!-- MAIN CONTENT -->
+
+<div class="mainContent">
+
+<div class="profileHeader">
+
+<img src="ppl4.webp" class="profileImg">
+
+<div class="profileInfo">
+
+<div class="username">
+kamzz_nagar
+<i class="fa-solid fa-circle-check" style="color:#1da1ff;"></i>
+</div>
+
+<div class="profileStats">
+<span>0 posts</span>
+<span>1 follower</span>
+<span>9 following</span>
+</div>
+
+<div class="profileButtons">
+<a href="404.html">Edit Profile</a>
+<a href="404.html">View archive</a>
+</div>
+
+</div>
+
+</div>
+
+<!-- HIGHLIGHTS -->
+
+<div class="highlights">
+
+<div class="highlight">
+<div class="highlightCircle">
+<i class="fa-solid fa-plus"></i>
+</div>
+<div>New</div>
+</div>
+
+</div>
+
+<!-- TABS -->
+
+<div class="profileTabs">
+
+<i class="fa-solid fa-table-cells"></i>
+<i class="fa-regular fa-bookmark"></i>
+<i class="fa-regular fa-image"></i>
+
+</div>
+
+<!-- POSTS GRID -->
+
+<div class="postsGrid">
+
+<!-- empty state -->
+
+</div>
+
+<div class="emptyProfile">
+
+<i class="fa-solid fa-camera"></i>
+
+<h2>Share photos</h2>
+
+<p>When you share photos, they will appear on your profile.</p>
+
+<br>
+
+<a href="create.html" style="color:#3ea6ff;">Share your first photo</a>
+
+</div>
+
+</div>
+
+
+
+<script>
+
+const sidebar = document.getElementById("sidebar");
+
+sidebar.addEventListener("click", function(){
+
+if(window.innerWidth > 768){
+
+sidebar.classList.toggle("active");
+
+}
+
+});
+
+</script>
+
+</body>
+</html>
+
+<footer class="stacklyFooter">
+
+<div class="footerContainer">
+
+<div class="footerCol">
+<h3>Stackly</h3>
+<p>Limitless marathons. Lightning sports.<br>
+Studios built for superfans.</p>
+</div>
+
+<div class="footerCol">
+<h3>Quick Links</h3>
+<ul>
+<li><a href="#">Home</a></li>
+<li><a href="#">About Us</a></li>
+<li><a href="#">Services</a></li>
+<li><a href="#">Blog</a></li>
+<li><a href="#">Dashboard</a></li>
+<li><a href="#">Contact</a></li>
+</ul>
+</div>
+
+<div class="footerCol">
+<h3>Contact Us</h3>
+<p>support@stackly.tv</p>
+<p>+1 800 123 4567</p>
+<p>Bangalore, India</p>
+<p>Partner with us</p>
+<p>Press & updates</p>
+</div>
+
+<div class="footerCol">
+<h3>Follow Us</h3>
+
+<div class="socialIcons">
+<a href="#"><i class="fa-brands fa-instagram"></i></a>
+<a href="#"><i class="fa-brands fa-youtube"></i></a>
+<a href="#"><i class="fa-brands fa-twitter"></i></a>
+</div>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="footerBottom">
+© 2026 Stackly. Built for marathoners.
+</div>
+
+</footer>
+<style>
+    .stacklyFooter{
+background:#1d212c;
+color:#cbd5f5;
+padding:60px 80px 20px;
+margin-left:80px;
+}
+
+.footerContainer{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:60px;
+}
+
+.footerCol h3{
+color:white;
+margin-bottom:15px;
+}
+
+.footerCol p{
+margin:6px 0;
+line-height:1.6;
+}
+
+.footerCol ul{
+list-style:none;
+padding:0;
+}
+
+.footerCol ul li{
+margin:6px 0;
+}
+
+.footerCol ul li a{
+color:#9ca3af;
+text-decoration:none;
+transition:0.3s;
+}
+
+.footerCol ul li a:hover{
+color:white;
+}
+
+.socialIcons{
+display:flex;
+gap:12px;
+margin-top:10px;
+}
+
+.socialIcons a{
+width:40px;
+height:40px;
+background:#0f172a;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:10px;
+color:white;
+font-size:18px;
+transition:0.3s;
+}
+
+.socialIcons a:hover{
+background:#1d4ed8;
+}
+
+.stacklyFooter hr{
+margin:40px 0 20px;
+border:0;
+border-top:1px solid rgba(255,255,255,0.08);
+}
+
+.footerBottom{
+color:#94a3b8;
+font-size:14px;
+}
+
+@media(max-width:768px){
+
+.stacklyFooter{
+margin-left:0;
+padding:40px 20px 90px;
+}
+
+.footerContainer{
+grid-template-columns:1fr;
+gap:30px;
+}
+
+}
+</style>
