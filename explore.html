@@ -747,12 +747,21 @@ transform:scale(1.1);
 
 <div class="footerContainer">
 
+<!-- LOGO COLUMN -->
 <div class="footerCol">
-<h3>Stackly</h3>
-<p>Limitless marathons. Lightning sports.<br>
-Studios built for superfans.</p>
+
+<a href="index.html" class="footerLogo">
+<img src="logo1.webp" alt="Logo">
+</a>
+
+<p>
+Limitless marathons. Lightning sports.<br>
+Studios built for superfans.
+</p>
+
 </div>
 
+<!-- QUICK LINKS -->
 <div class="footerCol">
 <h3>Quick Links</h3>
 <ul>
@@ -765,6 +774,7 @@ Studios built for superfans.</p>
 </ul>
 </div>
 
+<!-- CONTACT -->
 <div class="footerCol">
 <h3>Contact Us</h3>
 <p>support@stackly.tv</p>
@@ -774,6 +784,7 @@ Studios built for superfans.</p>
 <p>Press & updates</p>
 </div>
 
+<!-- SOCIAL -->
 <div class="footerCol">
 <h3>Follow Us</h3>
 
@@ -794,25 +805,49 @@ Studios built for superfans.</p>
 </div>
 
 </footer>
+
+
+
 <style>
-    .stacklyFooter{
+.stacklyFooter{
 background:#13101c;
 color:#cbd5f5;
 padding:60px 80px 20px;
 margin-left:80px;
 }
 
+/* grid */
 .footerContainer{
 display:grid;
 grid-template-columns:repeat(4,1fr);
 gap:60px;
 }
 
+/* headings */
 .footerCol h3{
 color:white;
 margin-bottom:15px;
 }
 
+/* logo */
+.footerLogo{
+display:inline-block;
+margin-bottom:18px;
+}
+
+.footerLogo img{
+height:55px;
+width:auto;
+display:block;
+object-fit:contain;
+transition:.3s ease;
+}
+
+.footerLogo img:hover{
+transform:scale(1.05);
+}
+
+/* text */
 .footerCol p{
 margin:6px 0;
 line-height:1.6;
@@ -837,6 +872,7 @@ transition:0.3s;
 color:white;
 }
 
+/* social */
 .socialIcons{
 display:flex;
 gap:12px;
@@ -860,17 +896,20 @@ transition:0.3s;
 background:#1d4ed8;
 }
 
+/* line */
 .stacklyFooter hr{
 margin:40px 0 20px;
 border:0;
 border-top:1px solid rgba(255,255,255,0.08);
 }
 
+/* bottom */
 .footerBottom{
 color:#94a3b8;
 font-size:14px;
 }
 
+/* mobile */
 @media(max-width:768px){
 
 .stacklyFooter{
@@ -881,6 +920,25 @@ padding:40px 20px 90px;
 .footerContainer{
 grid-template-columns:1fr;
 gap:30px;
+text-align:center;
+}
+
+.footerCol{
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+.socialIcons{
+justify-content:center;
+}
+
+.footerLogo img{
+height:48px;
+}
+
+.footerBottom{
+text-align:center;
 }
 
 }
